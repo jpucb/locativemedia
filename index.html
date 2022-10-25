@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--This is how you comment for html-->
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title> My Map </title>
+    <!--This where you put all your dependencies-->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id='map'></div>
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoianBjYXJ0b2dyYXBoZXIxMDEwIiwiYSI6ImNsOHVvM3NjMTA1cXMzdm80anVwaW1qY2MifQ.6GPfGt2ktaGpBJUsqAmnyg';
+    //variables (var) up the top
+    var map = new mapboxgl.Map({
+      container: 'map', // container id
+      style: 'mapbox://styles/jpcartographer1010/cl8uodnny000416o30u63vwar', // stylesheet location
+      center: [-121.78, 37.86],
+      zoom: 8 // starting zoom
+    });
+    var geolocate = new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: true
+    });
+    // map.on(functions) at the bottom!
+    map.addControl(geolocate);
+    map.on('load', function() {
+      geolocate.trigger();
+      map.addLayer({
+		 id: 'points-layer',
+ 		 type: 'symbol',
+  		 source: 'points',
+         layout: {
+          'icon-image': 'park-15', // more icons here: https://labs.mapbox.com/maki- icons/editor/
+          'icon-allow-overlap': true
+       },
+           paint: { }
+       });
+
+
+      map.addSource('points', {
+        type: 'geojson',
+        data: 'https://raw.githubusercontent.com/cwilmott/locativemedia/main/data/campus.geojson'
+      });
+    });
+    </script>
+  </body>
+</html>
